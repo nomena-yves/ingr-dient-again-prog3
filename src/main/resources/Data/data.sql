@@ -1,16 +1,13 @@
-//product
-insert into product (id,name,price,creation_datime) values (1,'Laptop Dell Xps',4500.00,'2024-01-15 09:30:00');
-insert into product (id,name,price,creation_datime) values (2,'iphone13',5200.00,'2024-02-01 14:10:00');
-insert into product (id,name,price,creation_datime) values (3,'Casque Sony WH1000',890.50,'2024-02-10 16:45:00');
-insert into  product (id,name,price,creation_datime) values (4,'clavier logitech',180.00,'2024-03-05 11:20:00');
-insert into product (id,name,price,creation_datime) values (5,'Ecran Samsung 27',1200.00,'2024-03-18 08:00:00');
+insert into Dish (id,name,dish_type)values (1,'Salade fraiche','START')
+                                         ,(2,'Poulet grillé','MAIN')
+                                         ,(3,'Riz au légumes','MAIN')
+                                         ,(4,'gâteau au chocolat','DESSERT')
+                                         ,(5,'Salade fruit','DESSERT');
 
-//product_category
-
-insert into product_category (id,name,id_product) values (1,'informatique',1);
-insert into product_category (id,name,id_product) values (2,'Téléphonie',2);
-insert into product_category (id,name,id_product) values (3,'Audio',3);
-insert into product_category (id,name,id_product) values (4,'Accessoire',4);
-insert into  product_category (id,name, id_product) values (5,'informatique',5);
-insert into  product_category (id,name,id_product) values (6,'Bureau',5);
-insert into product_category (id,name,id_product) values (7,'Mobile',2);
+insert into Ingredient(id,name,price,category,id_dish)values (1,'Laitue',800.00,'VEGETABLE',1),
+                                                             (2,'Tomate',600.00,'VEGETABLE',1),
+                                                             (3,'Poulet',4500.00,'ANIMAL',2),
+                                                             (4,'Chocolat',3000.00,'OTHER',4),
+                                                             (5,'Beurre',2500.00,'DAIRY',4);
+update dish set price=2000 where id=1;
+update dish set price=6000 where id=2;
