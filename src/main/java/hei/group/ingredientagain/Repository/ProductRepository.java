@@ -1,6 +1,7 @@
 package hei.group.ingredientagain.Repository;
 
 import hei.group.ingredientagain.Entity.ProductEntity;
+import hei.group.ingredientagain.Mapping.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,13 +15,18 @@ import java.util.List;
 
 @Repository
 public class ProductRepository {
-    @Autowired
     private DataSource dataSource;
+    private ProductMapper productMapper;
+
+    public ProductRepository(DataSource dataSource, ProductMapper productMapper) {
+        this.dataSource = dataSource;
+        this.productMapper = productMapper;
+    }
 
     public List<ProductEntity> getAllProducts(int page, int size)throws java.sql.SQLException {
         int offset = (page - 1) * size;
-        String sql= "SELECT * FROM Product limit? offset?";
         List<ProductEntity> products = new ArrayList<>();
+        String sql= "SELECT * FROM Product limit? offset?";
         try(Connection conn = dataSource.getConnection();
             PreparedStatement stmt =conn.prepareStatement(sql);){
             stmt.setInt(1, size);
@@ -28,14 +34,7 @@ public class ProductRepository {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()){
-                Instant createdAt = rs.getTimestamp("creation_datime").toInstant();
-                ProductEntity product = new ProductEntity(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        createdAt,
-                        null
-                );
-                products.add(product);
+               products.add(productMapper.map(rs));
             }
         }
         return products;
