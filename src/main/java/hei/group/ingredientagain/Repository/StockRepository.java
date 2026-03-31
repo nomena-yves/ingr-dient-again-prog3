@@ -8,5 +8,10 @@ private StockMapper stockMapper;
         this.stockMapper = stockMapper;
     }
 
+    public StockEntity getStockEntity()throws SQLException{
+        String sql="select id,name,quantity,unit,creation_datetime,id_ingredient from stokcMouvement inner join ingredient on stockMouvement.id_ingredient=ingredient.id where id=? ";
+        try(Connection conn= dataSource.getConnection()){
 
+        }
+    }
 }
