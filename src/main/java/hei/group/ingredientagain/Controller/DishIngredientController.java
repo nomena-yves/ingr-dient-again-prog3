@@ -35,18 +35,16 @@ public class ProductController {
         public class IngredientController {
 
             @GetMapping("/{id}/stock")
-            public ResponseEntity<StockResponse> getStock(
+            public ResponseEntity<?> getStock(
                     @PathVariable int id,
                     @RequestParam(name = "at", required = true) String at,
                     @RequestParam(name = "unit", required = true) String unit
             ) {
-
-
-                double stockValue = 10.5;
-
-                StockResponse response = new StockResponse(unit, stockValue);
-
-                return ResponseEntity.ok(response);
+                try{
+                    return ResponseEntity.status(HttpStatus.ok().body(""))
+                } catch (java.lang.Exception e) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ingredient.id={id) is not found");
+                }
             }
         }
     }
