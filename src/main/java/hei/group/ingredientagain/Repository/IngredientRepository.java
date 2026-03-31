@@ -50,4 +50,37 @@ PreparedStatement stmt = conn.prepareStatement(sql);
         return Listingredients;
     }
 
+    public List<IngredientEntity> getListIngredient() throws SQLException {
+        String sql = "select i.id,i.name,i.price,i.category from ingredient";
+        List<IngredientEntity> Listingredients = new ArrayList<>();
+        DishEntity dishEntity = null;
+        try(Connection conn = dataSource.getConnection()){
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                ingredientMapper.map(rs);
+                Listingredients.add(ingredient);
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return Listingredients;
+    }
+
+    public IngredientEntity getIngredient(int id) throws SQLException {
+        String sql = "select i.id,i.name,i.price,i.category from ingredient where i.id=?";
+        DishEntity dishEntity = null;
+        try(Connection conn = dataSource.getConnection()){
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+              return ingredientMapper.map(rs);
+
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return Listingredients;
+    }
 }
