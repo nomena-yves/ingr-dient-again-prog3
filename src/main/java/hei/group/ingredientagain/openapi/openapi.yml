@@ -1,10 +1,24 @@
-
 openapi: 3.1.0
 info:
   title: find dish
   version: 1.0.0
+servers:
+  - url: http://localhost:8080
+
 paths:
-  '/dish/{id}':
+  '/ingredient':
+    description: retourne tous les ingrédients
+    get:
+      responses:
+        '200':
+          description: succès de la requête
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientEntity'
+
+  '/ingredient/{id}':
+    description: retourne l'ingrédient correspondant à l'id
     get:
       parameters:
         - name: id
@@ -14,36 +28,85 @@ paths:
             type: integer
       responses:
         '200':
-          description: the dish
+          description: succès de la requête
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientEntity'
+
+  '/ingredients/{id}/stock':
+    get:
+      summary: retourne la valeur du stock d'un ingrédient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: at
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+            example: "2026-01-02T12:00:00Z"
+        - name: unit
+          in: query
+          required: true
+          description: Unité du stock à récupérer
+          schema:
+            type: string
+      responses:
+        '200':
+          description: succès de la requête
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: integer
-                  name:
+                  unit:
                     type: string
-                  ingredient:
-                    type: array
-                    items:
-                      type: string
-                example:
-                  id: 1
-                  name: Pizza
-                  price: 12.5
-                  ingredients:
-                    - cheese
-                    - tomato
-                    - ham
-  '/ingredient':
-     get:
-       parameters:
-         - offest:
-             in: path
-             schema:
-               type: integer
-         - size:
-             in: query
-             schema:
-               type: integer
+                  value:
+                    type: number
+
+components:
+  schemas:
+    IngredientEntity:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+          format: float
+        category:
+          type: string
+          enum:
+            - ANIMAL
+            - VEGETABLE
+            - DAIRY
+            - OTHER
+      example:
+        id: 1
+        name: Pizza
+        price: 12.5
+        category: ANIMAL
+
+    DishEntity:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+          format: float
+        dish_type:
+          type: string
+          enum:
+            - DESSERT
+            - STARTER
+            - MAIN
