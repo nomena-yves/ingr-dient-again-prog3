@@ -1,3 +1,4 @@
+
 openapi: 3.1.0
 info:
   title: find dish
@@ -6,7 +7,7 @@ paths:
   '/dish/{id}':
     get:
       parameters:
-        - id:
+        - name: id
           in: path
           required: true
           schema:
@@ -35,3 +36,14 @@ paths:
                     - cheese
                     - tomato
                     - ham
+  '/ingredient':
+     get:
+       parameters:
+         - offest:
+             in: path
+             schema:
+               type: integer
+         - size:
+             in: query
+             schema:
+               type: integer
