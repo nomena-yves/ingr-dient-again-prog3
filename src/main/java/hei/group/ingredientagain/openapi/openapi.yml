@@ -63,6 +63,59 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StockValues'
+        '400':
+          description: Paramètre obligatoire manquant
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: "Either mandatory query parameter `at` or `unit` is not provided."
+
+  /ingredients/{id}/stockMovements:
+    get:
+      summary: Retourne les mouvements de stock d'un ingrédient filtrés par plage de date
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant de l'ingrédient
+          schema:
+            type: integer
+        - name: from
+          in: query
+          required: true
+          description: Début de la plage de date (format ISO-8601)
+          schema:
+            type: string
+            format: date-time
+            example: "2026-01-01T00:00:00Z"
+        - name: to
+          in: query
+          required: true
+          description: Fin de la plage de date (format ISO-8601)
+          schema:
+            type: string
+            format: date-time
+            example: "2026-03-31T23:59:59Z"
+      responses:
+        '200':
+          description: Liste des mouvements de stock retournée avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockMouvement'
+        '400':
+          description: Paramètre obligatoire manquant
+          content:
+            text/plain:
+                example: "Either mandatory query parameter `from` or `to` is not provided."
+        '404':
+          description: Ingrédient non trouvé
+          content:
+            text/plain:
+                example: "Ingredient.id=1 is not found"
 
 components:
   schemas:
@@ -125,3 +178,19 @@ components:
       example:
         quantity: 25
         unit: KG
+
+    StockMouvement:
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          $ref: '#/components/schemas/StockValues'
+        type_mouvement:
+          type: string
+          enum:
+            - IN
+            - OUT
+        creation-datetime:
+          type: string
+          format: date-time
