@@ -117,6 +117,68 @@ paths:
             text/plain:
                 example: "Ingredient.id=1 is not found"
 
+    post:
+      summary: Ajoute des mouvements de stock à un ingrédient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant de l'ingrédient
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        description: Liste des mouvements de stock à créer
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/StockMouvement'
+            example:
+              - unit: KG
+                quantity: 5.5
+                type: IN
+              - unit: KG
+                quantity: 2.0
+                type: OUT
+      responses:
+        '201':
+          description: Mouvements de stock créés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockMouvement'
+        '400':
+          description: Corps de la requête manquant ou vide
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Le corps de la requête est obligatoire et doit contenir une liste de mouvements."
+        '404':
+          description: Ingrédient non trouvé
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Ingredient.id=1 is not found"
+
+  /dishes:
+    get:
+      summary: Retourne la liste de tous les plats avec leurs ingrédients
+      responses:
+        '200':
+          description: Liste des plats retournée avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DishEntity'
+
 components:
   schemas:
     IngredientEntity:
