@@ -155,15 +155,11 @@ paths:
           description: Corps de la requête manquant ou vide
           content:
             text/plain:
-              schema:
-                type: string
                 example: "Le corps de la requête est obligatoire et doit contenir une liste de mouvements."
         '404':
           description: Ingrédient non trouvé
           content:
             text/plain:
-              schema:
-                type: string
                 example: "Ingredient.id=1 is not found"
 
   /dishes:
@@ -178,6 +174,44 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DishEntity'
+
+  /dishes/{id}/ingredients:
+    put:
+      summary: Modifie la liste des ingrédients associés à un plat
+      operationId: updateDishIngredients
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant du plat
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        description: Liste des ingrédients à associer au plat
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/IngredientEntity'
+      responses:
+        '200':
+          description: Liste des ingrédients du plat mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DishEntity'
+        '400':
+          description: Corps de la requête manquant
+          content:
+            text/plain:
+                example: "Le corps de la requête est obligatoire et doit contenir une liste d'ingrédients."
+        '404':
+          description: Plat non trouvé
+          content:
+            text/plain:
+                example: "Dish.id=1 is not found"
 
 components:
   schemas:
