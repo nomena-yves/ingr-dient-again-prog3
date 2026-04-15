@@ -62,12 +62,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  unit:
-                    type: string
-                  value:
-                    type: number
+                $ref: '#/components/schemas/StockValues'
 
 components:
   schemas:
@@ -110,3 +105,23 @@ components:
             - DESSERT
             - STARTER
             - MAIN
+      example:
+        id: 3
+        name: Lasagne
+        price: 15.75
+        dish_type: MAIN
+
+    StockValues:
+      type: object
+      properties:
+        quantity:
+          type: integer
+        unit:
+          type: string
+          enum:
+            - KG
+            - PCS
+            - L
+      example:
+        quantity: 25
+        unit: KG
